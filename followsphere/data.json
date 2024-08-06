@@ -1,0 +1,32 @@
+{
+    "devops": {
+        "tags": [
+            "DevOps",
+            "Python",
+            "Cloud",
+            "AWS",
+            "GCP",
+            "Azure"
+        ]
+    },
+    "python": {
+        "tags": [
+            "DevOps",
+            "Python",
+            "Cloud",
+            "AWS",
+            "GCP",
+            "Azure"
+        ]
+    },
+    "Cloud": {
+        "tags": [
+            "DevOps",
+            "Python",
+            "Cloud",
+            "AWS",
+            "GCP",
+            "Azure"
+        ]
+    }
+}
