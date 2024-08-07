@@ -50,14 +50,16 @@ def read_data() -> Optional[Dict]:
 
 def tags_follower(data: Dict):
     console = Console()
+    console.clear()
+    show_banner()
     options: List = []
     for k, _v in data.items():
         options.append(k)
 
     console.print("Which tag collection do you want to follow?", style="red")
-    items = select_multiple(options, tick_character="✓", ticked_indices=None, tick_style="green")
+    items = select_multiple(sorted(options), tick_character="✓", ticked_indices=None, tick_style="green")
     if items:
-        console.print(f"You selected {items}")
+        console.print(f"\nYou selected {items}")
         tags = []
         for item in items:
             if data[item]["tags"]:

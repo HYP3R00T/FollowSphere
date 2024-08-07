@@ -13,17 +13,11 @@
         "Python": {
             "tags": [
                 "DevOps",
-                "Python",
-                "Cloud",
-                "AWS",
-                "GCP",
-                "Azure"
+                "Python"
             ]
         },
         "Cloud": {
             "tags": [
-                "DevOps",
-                "Python",
                 "Cloud",
                 "AWS",
                 "GCP",

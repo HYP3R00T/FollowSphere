@@ -1,19 +1,14 @@
 import asyncio
 from typing import Dict, List
 
-import typer
 from playwright.async_api import Browser, ElementHandle, Page, async_playwright
-from typing_extensions import Annotated
 
 from followsphere.utils import read_data, tags_follower
 
 
-async def login(page: Page, username: str, password: str):
+async def login(page: Page):
     await page.goto("https://www.linkedin.com/login")
-    await page.fill("input#username", username)
-    await page.fill("input#password", password)
-    await page.click('button[type="submit"]')
-    await page.wait_for_load_state("networkidle")
+    await page.wait_for_selector(".authentication-outlet")
 
 
 async def follow_hashtags(page: Page, hashtags: List[str]):
@@ -34,20 +29,17 @@ async def follow_hashtags(page: Page, hashtags: List[str]):
             print(f"An error occurred for #{hashtag}: {e}")
 
 
-async def entrypoint(linkedin_username: str, linkedin_password: str, hashtags: List[str]):
+async def entrypoint(hashtags: List[str]):
     async with async_playwright() as p:
         browser: Browser = await p.chromium.launch(headless=False)  # Set to False to see the browser in action
         page: Page = await browser.new_page()
-        await login(page, linkedin_username, linkedin_password)
+        await login(page)
         await follow_hashtags(page, hashtags)
         await browser.close()
 
 
-def execute_linkedin(
-    username: Annotated[str, typer.Option(prompt="Enter your username or email")],
-    password: Annotated[str, typer.Option(prompt="Enter your password", hide_input=True, confirmation_prompt=True)],
-):
+def execute_linkedin():
     data: Dict = read_data()["LinkedIn"]
     print(data)
     hashtags: List[str] = tags_follower(data)
-    asyncio.run(entrypoint(username, password, hashtags))
+    asyncio.run(entrypoint(hashtags))
