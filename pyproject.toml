@@ -2,7 +2,7 @@
 name = "followsphere"
 version = "0.1.0"
 description = ""
-authors = ["hyperoot <hyperoot.tech@proton.me>"]
+authors = ["hyperoot <rajesh@hyperoot.dev>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -55,4 +55,3 @@ section-order = [
     "first-party",
     "local-folder",
 ]
-known-first-party = []
