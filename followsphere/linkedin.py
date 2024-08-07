@@ -10,10 +10,11 @@ from followsphere.utils import read_data, show_banner, tags_follower
 
 async def login(page: Page) -> None:
     await page.goto("https://www.linkedin.com/login")
-    await page.wait_for_selector(".authentication-outlet")
+    await page.wait_for_selector(".authentication-outlet", timeout=0)
 
 
 async def follow_hashtags(page: Page, hashtags: List[str]) -> None:
+    console: Console = Console()
     for hashtag in hashtags:
         try:
             await page.goto(f"https://www.linkedin.com/feed/hashtag/{hashtag.lower()}/")
@@ -22,21 +23,49 @@ async def follow_hashtags(page: Page, hashtags: List[str]) -> None:
                 # Check if the button has the 'is-following' class
                 class_name: str = await follow_button.get_attribute("class")
                 if "is-following" in class_name:
-                    print(f"Already following #{hashtag}")
+                    console.print(f"Already following #{hashtag}")
                 else:
                     # Click the follow button if it's not followed yet
                     await follow_button.click()
-                    print(f"Clicked follow for [green]#{hashtag}[/green]")
+                    console.print(f"Clicked follow for [green]#{hashtag}[/green]")
         except Exception as e:
             print(f"An error occurred for #{hashtag}: {e}")
 
 
-async def entrypoint(hashtags: List[str]) -> None:
+async def unfollow_hashtags(page: Page) -> None:
+    try:
+        await page.goto("https://www.linkedin.com/mynetwork/network-manager/hashtags/")
+        await page.wait_for_selector(".reusable-search__result-container")
+        follow_buttons = await page.query_selector_all("button[aria-label*='Click to stop following']")
+
+        for button in follow_buttons:
+            await button.click()
+            await page.wait_for_selector(".artdeco-modal--layer-confirmation")
+
+            unfollow_button = await page.query_selector("button[data-test-dialog-primary-btn]")
+            if unfollow_button:
+                await unfollow_button.click()
+
+            await page.wait_for_timeout(1000)  # Wait for 1 second
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+async def follow_entrypoint(hashtags: List[str]) -> None:
     async with async_playwright() as p:
         browser: Browser = await p.chromium.launch(headless=False)  # Set to False to see the browser in action
         page: Page = await browser.new_page()
         await login(page)
         await follow_hashtags(page, hashtags)
+        await browser.close()
+
+
+async def unfollow_entrypoint() -> None:
+    async with async_playwright() as p:
+        browser: Browser = await p.chromium.launch(headless=False)  # Set to False to see the browser in action
+        page: Page = await browser.new_page()
+        await login(page)
+        await unfollow_hashtags(page)
         await browser.close()
 
 
@@ -52,9 +81,16 @@ def execute_linkedin() -> None:
     option: str = select(sorted(options), cursor="\uf061", cursor_style="red")
     if option == "Role based Collections":
         hashtags: List[str] = tags_follower(data["Role based Collections"])
-        asyncio.run(entrypoint(hashtags))
+        asyncio.run(follow_entrypoint(hashtags))
     elif option == "Skill based Collections":
         hashtags: List[str] = tags_follower(data["Skill based Collections"])
-        asyncio.run(entrypoint(hashtags))
+        asyncio.run(follow_entrypoint(hashtags))
     else:
         print("\nInvalid option selected")
+
+
+def execute_unfollow_linkedin() -> None:
+    console: Console = Console()
+    console.clear()
+    show_banner()
+    asyncio.run(unfollow_entrypoint())

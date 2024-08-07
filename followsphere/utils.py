@@ -52,6 +52,17 @@ def show_banner() -> None:
     console.print(Panel(f"{url} - v{version}"), justify="center", style="green")
 
 
+def show_goodbye() -> None:
+    console: Console = Console()
+    console.clear()
+    message: str = """
+Thanks for using [blue]FollowSphere[/blue]\n
+You can follow me at [blue]https://www.linkedin.com/in/rajesh-kumar-das/[/blue]\n
+Source code is available at [blue]https://github.com/HYP3R00T/FollowSphere[/blue]
+        """
+    console.print(Panel(message, title="[red]\uf004 Thank you \uf004[/red]", border_style="red"), justify="center")
+
+
 def read_data() -> Optional[Dict]:
     try:
         script_dir: str = os.path.dirname(os.path.abspath(__file__))
