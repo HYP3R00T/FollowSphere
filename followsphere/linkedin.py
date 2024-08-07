@@ -44,9 +44,10 @@ async def entrypoint(linkedin_username: str, linkedin_password: str, hashtags: L
 
 
 def execute_linkedin(
-    username: Annotated[str, typer.Option(prompt=True)],
-    password: Annotated[str, typer.Option(prompt=True, hide_input=True)],
+    username: Annotated[str, typer.Option(prompt="Enter your username or email")],
+    password: Annotated[str, typer.Option(prompt="Enter your password", hide_input=True, confirmation_prompt=True)],
 ):
-    data: Dict = read_data()
+    data: Dict = read_data()["LinkedIn"]
+    print(data)
     hashtags: List[str] = tags_follower(data)
     asyncio.run(entrypoint(username, password, hashtags))
