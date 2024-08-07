@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "followsphere"
 version = "0.1.2"
-description = ""
+description = "Streamline your hashtag following and stay on top of trends effortlessly"
 authors = ["hyperoot <rajesh@hyperoot.dev>"]
 readme = "README.md"
 
@@ -13,6 +13,7 @@ beaupy = "^3.9.1"
 rich = "^13.7.1"
 pyfiglet = "^1.0.2"
 termcolor = "^2.4.0"
+toml = "^0.10.2"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
