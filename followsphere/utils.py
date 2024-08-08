@@ -4,7 +4,6 @@ import subprocess
 import sys
 from typing import Any, Dict, List, Optional, Union
 
-import toml
 from beaupy import select_multiple
 from pyfiglet import Figlet
 from rich.console import Console
@@ -28,15 +27,6 @@ def install_playwright_browsers() -> None:
     console.clear()
 
 
-def get_version_from_toml() -> str:
-    try:
-        pyproject: Dict[str, Any] = toml.load("pyproject.toml")
-        return pyproject.get("tool", {}).get("poetry", {}).get("version", "unknown")
-    except Exception as e:
-        print(f"Error reading version from pyproject.toml: {e}")
-        return "unknown"
-
-
 def show_banner() -> None:
     try:
         width: int = os.get_terminal_size()[0]
@@ -46,10 +36,9 @@ def show_banner() -> None:
     banner: Figlet = Figlet(font="big", justify="center", width=width)
     cprint(banner.renderText("FollowSphere"), color="blue")
 
-    version: str = get_version_from_toml()
     url: str = "https://hyperoot.dev"
     console: Console = Console()
-    console.print(Panel(f"{url} - v{version}"), justify="center", style="green")
+    console.print(Panel(f"{url}"), justify="center", style="green")
 
 
 def show_goodbye() -> None:
