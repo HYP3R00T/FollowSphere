@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "followsphere"
-version = "0.1.6"
+version = "0.1.7"
 description = "Streamline your hashtag following and stay on top of trends effortlessly"
 authors = ["hyperoot <rajesh@hyperoot.dev>"]
 readme = "README.md"
