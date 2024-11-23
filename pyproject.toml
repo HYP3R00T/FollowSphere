@@ -18,6 +18,9 @@ termcolor = "^2.4.0"
 pre-commit = "^3.7.1"
 ruff = "^0.5.0"
 
+[tool.poetry.scripts]
+followsphere = "followsphere.__main__:main"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
